@@ -21,7 +21,7 @@ export const FUNCTIONS_CHAIN = [
   },
   {
     id: 5,
-    equation: "x**2",
+    equation: "x^2",
     next: 3,
   },
 ];

@@ -6,13 +6,6 @@ import { DataType } from "../../types";
 
 const InputBox = ({ data }: { data: DataType }) => {
   const isInput = data.type === "input";
-  const input = useRef(null);
-  
-  useEffect(() => {
-    if (input?.current) {
-      input?.current?.focus();
-    }
-  }, [data.inputValue]);
 
   return (
     <div className={styles["label-container"]}>
@@ -21,11 +14,10 @@ const InputBox = ({ data }: { data: DataType }) => {
       </div>
       <div>
         <input
-          ref={input}
           className={styles[`${data.type}-style`]}
           type="number"
           disabled={!isInput}
-          value={!isInput ? data.outputValue : data.inputValue}
+          value={!isInput ? data.outputValue : data?.inputValue}
           onChange={(e) => {
             data.onInputChange(e.target.value);
           }}

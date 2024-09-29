@@ -8,10 +8,6 @@ This project is a dynamic function chaining tool built with React Flow, allowing
 2. [Installation](#installation)
 3. [Usage](#usage)
 4. [Functionality](#functionality)
-5. [Code Structure](#code-structure)
-6. [Future Enhancements](#future-enhancements)
-7. [Contributing](#contributing)
-8. [License](#license)
 
 ## Features
 
@@ -42,3 +38,31 @@ To get started with this project, follow these steps:
 ```bash
   npm start
 ```
+
+## Installation
+
+1. Enter the initial value in the provided input field.
+2. Modify the mathematical equations in each function's input field as needed.
+3. The final output will be displayed after all functions are applied, adhering to the fixed execution order.
+
+## Functionality
+
+### Function Cards
+
+Each function card includes:
+
+- A text input field for entering the mathematical equation.
+- Input validation to ensure only basic arithmetic operations and exponents are accepted.
+- The structure is designed to easily accommodate additional functions in the future.
+
+### Function Chaining
+
+- A dropdown menu displays the next function in the chain for each function card, which is disabled to prevent user modifications.
+- The chaining of functions is visually represented using connected lines, clearly illustrating the flow from the initial input to the final output.
+
+### Input and Output
+
+- Users can enter an initial value (x), which connects to function 1.
+- The output (y) is displayed once all functions have been applied, showcasing the final result connected to function 3.
+
+`

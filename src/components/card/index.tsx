@@ -8,13 +8,6 @@ import { validateEquation } from "../../constants";
 import { DataType, FunctionChainItem } from "../../types";
 
 const FunctionCardNode = ({ data }: { data: DataType }) => {
-  const inputRef = useRef(null);
-  
-  useEffect(() => {
-    if (inputRef.current) {
-      inputRef.current.focus();
-    }
-  }, [data.equation]);
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const newEquation = event.target.value;
     if (validateEquation(newEquation)) {
@@ -36,7 +29,6 @@ const FunctionCardNode = ({ data }: { data: DataType }) => {
         <div>
           <label className={styles["label"]}>Equation</label>
           <input
-            ref={inputRef}
             className={styles["input-style"]}
             type="text"
             value={data.equation || ""}
@@ -81,6 +73,12 @@ const FunctionCardNode = ({ data }: { data: DataType }) => {
   );
 };
 
+const nodeTypes = {
+  special: FunctionCardNode,
+  inputNode: InputBox,
+  outputNode: InputBox,
+};
+
 const FunctionCardFlow = ({
   functions,
 }: {
@@ -89,7 +87,6 @@ const FunctionCardFlow = ({
   const [inputValue, setInputValue] = useState(null);
   const [outputValue, setOutputValue] = useState(null);
   const [functionData, setFunctionData] = useState(functions);
-
 
   const handleInputChange = (value: number) => {
     setInputValue(value);
@@ -108,15 +105,24 @@ const FunctionCardFlow = ({
     }
 
     let result = parsedInput;
-
-    for (const func of functionData) {
+    let currentFunction = functionData.find((func) => func.id === 1);
+    while (currentFunction) {
       try {
-        const equation = func.equation.replace("x", result.toString());
+        const equation = currentFunction.equation
+          .replace("x", result.toString())
+          .replace(/\^/g, "**");
+        console.log(equation, "Equation being evaluated");
+
         result = eval(equation);
+        currentFunction = functionData.find(
+          (func) => func.id === currentFunction?.next
+        );
       } catch (error) {
         console.error("Error in equation evaluation:", error);
+        return;
       }
     }
+
     setOutputValue(result);
   };
 
@@ -125,7 +131,6 @@ const FunctionCardFlow = ({
       calculateOutput(inputValue);
     }
   }, [inputValue, functionData]);
-
 
   const firstNode = functions.find(
     (func) => !functions.some((f) => f.next === func.id)
@@ -136,7 +141,7 @@ const FunctionCardFlow = ({
     {
       id: "input-node",
       type: "inputNode",
-      key: 'input',
+      key: "input",
       position: { x: -145, y: 375 },
       data: { inputValue, type: "input", onInputChange: handleInputChange },
     },
@@ -193,19 +198,14 @@ const FunctionCardFlow = ({
   return (
     <div style={{ width: "100%", height: "100vh" }}>
       <ReactFlow
-        defaultPosition={[350, -10]}
         nodes={nodes}
         defaultEdges={edges}
         panOnDrag={false}
         panOnScroll={false}
         zoomOnScroll={false}
         zoomOnPinch={false}
-        defaultZoom={0.7}
-        nodeTypes={{
-          special: FunctionCardNode,
-          inputNode: InputBox,
-          outputNode: InputBox,
-        }}
+        fitView
+        nodeTypes={nodeTypes}
       >
         <Background />
       </ReactFlow>
