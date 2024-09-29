@@ -26,8 +26,8 @@ export const FUNCTIONS_CHAIN = [
     },
   ];
   
-const VALID_EQUATION_REGEX = /^[0-9+\-*/^()\s]*$/;
+const VALID_EQUATION_REGEX = /^[0-9x\+\-\*\/\^]+$/;
 
-const validateEquation = (equation) => {
+export const validateEquation = (equation:string) => {
     return VALID_EQUATION_REGEX.test(equation);
 };

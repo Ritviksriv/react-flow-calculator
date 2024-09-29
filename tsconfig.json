@@ -1,10 +1,14 @@
 {
   "compilerOptions": {
+    "jsx": "react",
     "module": "commonjs",
     "noImplicitAny": true,
     "removeComments": true,
     "preserveConstEnums": true,
-    "sourceMap": true
+    "sourceMap": true,
+    "moduleResolution": "node",
+    "allowSyntheticDefaultImports": true,
+"esModuleInterop": true
   },
-  "files": ["./node_modules/wmr/types.d.ts"]
+  "include": ["src/**/*"],
 }

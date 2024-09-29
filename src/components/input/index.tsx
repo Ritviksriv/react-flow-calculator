@@ -2,9 +2,9 @@ import React, { useEffect, useRef } from "react";
 import styles from "./index.module.css";
 import { Handle, Position } from "react-flow-renderer";
 import ConnectionPoint from "../connection-point";
+import { DataType } from "../../types";
 
-const InputBox = ({ data }) => {
-  console.log(data.inputValue, "checkData");
+const InputBox = ({ data }: {data:DataType}) => {
   const isInput = data.type === "input";
   const inputRef = useRef(null);
   useEffect(() => {
@@ -20,7 +20,7 @@ const InputBox = ({ data }) => {
       </div>
       <div>
         <input
-          ref={inputRef}
+          
           className={styles[`${data.type}-style`]}
           type="number"
           disabled={!isInput}

@@ -4,18 +4,24 @@ import styles from "./index.module.css";
 import Dotted from "../../assets/dotted";
 import InputBox from "../input";
 import ConnectionPoint from "../connection-point";
+import { validateEquation } from "../../constants";
+import { DataType, FunctionChainItem } from "../../types";
 
-const FunctionCardNode = ({ data}) => {
-  const currentInputRef = useRef(null);
-  const handleChange = (event) => {
+const FunctionCardNode = ({ data }:{ data: DataType}) => {
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const newEquation = event.target.value;
-    // Call onEquationChange from props
-    if (data.onEquationChange) {
-      data.onEquationChange(data.id, newEquation); // Update the equation
+    if (validateEquation(newEquation)) {
+      if (data.onEquationChange) {
+        data.onEquationChange(data.id, newEquation);
+      }
+    } else {
+      alert(
+        "Invalid equation! Please use only numbers, x, +, -, *, /, ^, and parentheses."
+      );
     }
   };
   return (
-    <div  className={styles["card-container"]}>
+    <div className={styles["card-container"]}>
       <div className={styles["header"]}>
         <Dotted /> Function: {data.id}
       </div>
@@ -24,7 +30,6 @@ const FunctionCardNode = ({ data}) => {
           <label className={styles["label"]}>Equation</label>
           <input
             key={data.id}
-           
             className={styles["input-style"]}
             type="text"
             value={data.equation || ""}
@@ -33,7 +38,11 @@ const FunctionCardNode = ({ data}) => {
         </div>
         <div>
           <label className={styles["label"]}>Next Function</label>
-          <select className={styles["select-style"]} disabled value={data.next || ""}>
+          <select
+            className={styles["select-style"]}
+            disabled
+            value={data.next || ""}
+          >
             {data.next ? <option>Function {data.next}</option> : null}
           </select>
         </div>
@@ -41,11 +50,22 @@ const FunctionCardNode = ({ data}) => {
           <div className={styles["connection-div"]}>
             <ConnectionPoint />
             <div>input</div>
-            <Handle type="target" style={{ marginLeft: "-30px" }} isConnectable={false} position={Position.Left} id="input" />
+            <Handle
+              type="target"
+              style={{ marginLeft: "-30px" }}
+              isConnectable={false}
+              position={Position.Left}
+              id="input"
+            />
           </div>
           <div className={styles["connection-div"]}>
             <div>output</div>
-            <Handle type="source" isConnectable={false} position={Position.Right} id="output" />
+            <Handle
+              type="source"
+              isConnectable={false}
+              position={Position.Right}
+              id="output"
+            />
             <ConnectionPoint />
           </div>
         </div>
@@ -54,36 +74,44 @@ const FunctionCardNode = ({ data}) => {
   );
 };
 
-const FunctionCardFlow = ({ functions }) => {
-  const [inputValue, setInputValue] = useState(""); // Hold the input node value
-  const [outputValue, setOutputValue] = useState(""); // Hold the output node value
+const FunctionCardFlow = ({
+  functions,
+}: {
+  functions: FunctionChainItem[];
+}) => {
+  const [inputValue, setInputValue] = useState(null);
+  const [outputValue, setOutputValue] = useState(null);
   const [functionData, setFunctionData] = useState(functions);
-  console.log(inputValue,'wdnnn')
-  console.log(functionData,'checkDatam')
+  console.log(inputValue, "wdnnn");
+  console.log(functionData, "checkDatam");
 
-  const handleInputChange = (value) => {
+  const handleInputChange = (value: number) => {
     setInputValue(value);
   };
-  const handleEquationChange = (id, equation) => {
+  const handleEquationChange = (id: number, equation: string) => {
     setFunctionData((prev) =>
-      prev.map((func) =>
-        func.id === id ? { ...func, equation } : func
-      )
+      prev.map((func) => (func.id === id ? { ...func, equation } : func))
     );
   };
 
-  const calculateOutput = (input) => {
-    let result = parseFloat(input);
+  const calculateOutput = (input: string) => {
+    const parsedInput = parseFloat(input);
+    if (isNaN(parsedInput)) {
+      console.error("Invalid input. Please provide a valid number.");
+      return;
+    }
+
+    let result = parsedInput;
 
     for (const func of functionData) {
       try {
-        result = eval(func.equation.replace("x", result)); // Calculate using the equation, replace 'x' with the input
+        const equation = func.equation.replace("x", result.toString());
+        result = eval(equation);
       } catch (error) {
         console.error("Error in equation evaluation:", error);
       }
     }
-
-    setOutputValue(result); // Set the final result in the output node
+    setOutputValue(result);
   };
 
   useEffect(() => {
@@ -91,14 +119,16 @@ const FunctionCardFlow = ({ functions }) => {
       calculateOutput(inputValue);
     }
   }, [inputValue, functionData]);
-  
+
   useEffect(() => {
     if (inputValue !== "") {
       calculateOutput(inputValue);
     }
   }, [functionData]);
 
-  const firstNode = functions.find((func) => !functions.some((f) => f.next === func.id));
+  const firstNode = functions.find(
+    (func) => !functions.some((f) => f.next === func.id)
+  );
   const lastNode = functions.find((func) => func.next === null);
 
   const nodes = [
@@ -116,7 +146,12 @@ const FunctionCardFlow = ({ functions }) => {
         x: index > 2 ? 335 * index - 820 : 350 * index,
         y: index > 2 ? 530 : 200,
       },
-     data: { id: funcInfo.id, equation: funcInfo.equation, next: funcInfo.next, onEquationChange: handleEquationChange },
+      data: {
+        id: funcInfo.id,
+        equation: funcInfo.equation,
+        next: funcInfo.next,
+        onEquationChange: handleEquationChange,
+      },
     })),
     {
       id: "output-node",
@@ -154,7 +189,21 @@ const FunctionCardFlow = ({ functions }) => {
 
   return (
     <div style={{ width: "100%", height: "100vh" }}>
-      <ReactFlow defaultPosition={[350,-10]} nodes={nodes} defaultEdges={edges} panOnDrag={false} panOnScroll={false} zoomOnScroll={false} zoomOnPinch={false} defaultZoom={0.7} nodeTypes={{ special: FunctionCardNode, inputNode: InputBox, outputNode: InputBox }}>
+      <ReactFlow
+        defaultPosition={[350, -10]}
+        nodes={nodes}
+        defaultEdges={edges}
+        panOnDrag={false}
+        panOnScroll={false}
+        zoomOnScroll={false}
+        zoomOnPinch={false}
+        defaultZoom={0.7}
+        nodeTypes={{
+          special: FunctionCardNode,
+          inputNode: InputBox,
+          outputNode: InputBox,
+        }}
+      >
         <Background />
       </ReactFlow>
     </div>
