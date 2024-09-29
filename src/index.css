@@ -1,15 +1,12 @@
-body{
-    
-}
 .react-flow__node {
-    z-index: -1 !important;
-  }
-  
-  .react-flow .react-flow__handle {
-    top: auto;
-    left: auto;
-    right: auto;
-    bottom: 0;
-    transform: translate(480%, -250%);
-    opacity: 0;
-  }
+  z-index: -1 !important;
+}
+
+.react-flow .react-flow__handle {
+  top: auto;
+  left: auto;
+  right: auto;
+  bottom: 0;
+  transform: translate(480%, -250%);
+  opacity: 0;
+}
