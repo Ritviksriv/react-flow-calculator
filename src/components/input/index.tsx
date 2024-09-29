@@ -7,11 +7,12 @@ import { DataType } from "../../types";
 const InputBox = ({ data }: { data: DataType }) => {
   const isInput = data.type === "input";
   const input = useRef(null);
+  
   useEffect(() => {
-    if (input.current) {
+    if (input?.current) {
       input?.current?.focus();
     }
-  }, []);
+  }, [data.inputValue]);
 
   return (
     <div className={styles["label-container"]}>

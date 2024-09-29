@@ -34,7 +34,7 @@
 }
 
 .input-style:focus {
-  outline: none; /* Remove the default outline */
+  outline: none;
 }
 
 .select-style {

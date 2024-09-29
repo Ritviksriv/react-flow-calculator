@@ -9,6 +9,7 @@ import { DataType, FunctionChainItem } from "../../types";
 
 const FunctionCardNode = ({ data }: { data: DataType }) => {
   const inputRef = useRef(null);
+  
   useEffect(() => {
     if (inputRef.current) {
       inputRef.current.focus();
@@ -18,7 +19,7 @@ const FunctionCardNode = ({ data }: { data: DataType }) => {
     const newEquation = event.target.value;
     if (validateEquation(newEquation)) {
       if (data.onEquationChange) {
-        data.onEquationChange(data.id, newEquation);
+        data.onEquationChange(data.id as number, newEquation);
       }
     } else {
       alert(
@@ -88,8 +89,7 @@ const FunctionCardFlow = ({
   const [inputValue, setInputValue] = useState(null);
   const [outputValue, setOutputValue] = useState(null);
   const [functionData, setFunctionData] = useState(functions);
-  console.log(inputValue, "wdnnn");
-  console.log(functionData, "checkDatam");
+
 
   const handleInputChange = (value: number) => {
     setInputValue(value);
@@ -126,11 +126,6 @@ const FunctionCardFlow = ({
     }
   }, [inputValue, functionData]);
 
-  useEffect(() => {
-    if (inputValue !== "") {
-      calculateOutput(inputValue);
-    }
-  }, [functionData]);
 
   const firstNode = functions.find(
     (func) => !functions.some((f) => f.next === func.id)
@@ -156,6 +151,7 @@ const FunctionCardFlow = ({
       data: {
         id: funcInfo.id,
         equation: funcInfo.equation,
+        inputValue,
         next: funcInfo.next,
         onEquationChange: handleEquationChange,
       },

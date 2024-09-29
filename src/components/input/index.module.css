@@ -38,6 +38,12 @@
   font-weight: 700;
   font-size: 18px;
 }
+.input-style:focus {
+  outline: none;
+}
+.output-style:focus {
+  outline: none;
+}
 
 .output-style {
   width: 115px;

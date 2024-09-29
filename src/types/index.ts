@@ -5,7 +5,7 @@ export type FunctionChainItem = {
 };
 
 export type DataType = {
-  id: number;
+  id: number | string;
   equation: string;
   next: number | null;
   onEquationChange?: (id: number, equation: string) => void;
