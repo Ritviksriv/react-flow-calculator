@@ -5,8 +5,8 @@ import FunctionCardFlow from "../components/card";
 
 const LandingPage = () => {
   return (
-    <div className={styles['main-container']}>
-        <FunctionCardFlow functions={FUNCTIONS_CHAIN} />
+    <div className={styles["main-container"]}>
+      <FunctionCardFlow functions={FUNCTIONS_CHAIN} />
     </div>
   );
 };

@@ -7,7 +7,13 @@ import ConnectionPoint from "../connection-point";
 import { validateEquation } from "../../constants";
 import { DataType, FunctionChainItem } from "../../types";
 
-const FunctionCardNode = ({ data }:{ data: DataType}) => {
+const FunctionCardNode = ({ data }: { data: DataType }) => {
+  const inputRef = useRef(null);
+  useEffect(() => {
+    if (inputRef.current) {
+      inputRef.current.focus();
+    }
+  }, [data.equation]);
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const newEquation = event.target.value;
     if (validateEquation(newEquation)) {
@@ -29,7 +35,7 @@ const FunctionCardNode = ({ data }:{ data: DataType}) => {
         <div>
           <label className={styles["label"]}>Equation</label>
           <input
-            key={data.id}
+            ref={inputRef}
             className={styles["input-style"]}
             type="text"
             value={data.equation || ""}
@@ -135,6 +141,7 @@ const FunctionCardFlow = ({
     {
       id: "input-node",
       type: "inputNode",
+      key: 'input',
       position: { x: -145, y: 375 },
       data: { inputValue, type: "input", onInputChange: handleInputChange },
     },

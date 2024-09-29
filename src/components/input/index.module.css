@@ -26,7 +26,6 @@
   display: flex;
   flex-direction: column;
   gap: 10px;
-  
 }
 
 .input-style {
@@ -36,6 +35,8 @@
   border-radius: 15px;
   padding-left: 10px;
   border: 2px solid rgba(255, 194, 103, 1);
+  font-weight: 700;
+  font-size: 18px;
 }
 
 .output-style {
@@ -45,14 +46,16 @@
   border-radius: 15px;
   text-align: right;
   border: 2px solid rgba(45, 209, 121, 1);
-  
+  font-weight: 700;
+  font-size: 18px;
 }
 
-.border-style-input{
+.border-style-input {
   position: absolute;
   height: 39px;
   background-color: transparent;
   border-left: 1px solid rgba(255, 238, 213, 1);
+  overflow-y: hidden;
   width: 40px;
   display: flex;
   justify-content: center;
@@ -60,7 +63,7 @@
   transform: translate(210%, -106%);
 }
 
-.border-style-output{
+.border-style-output {
   position: absolute;
   height: 39px;
   background-color: transparent;

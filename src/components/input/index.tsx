@@ -4,12 +4,12 @@ import { Handle, Position } from "react-flow-renderer";
 import ConnectionPoint from "../connection-point";
 import { DataType } from "../../types";
 
-const InputBox = ({ data }: {data:DataType}) => {
+const InputBox = ({ data }: { data: DataType }) => {
   const isInput = data.type === "input";
-  const inputRef = useRef(null);
+  const input = useRef(null);
   useEffect(() => {
-    if (inputRef.current) {
-      inputRef?.current?.focus();
+    if (input.current) {
+      input?.current?.focus();
     }
   }, []);
 
@@ -20,7 +20,7 @@ const InputBox = ({ data }: {data:DataType}) => {
       </div>
       <div>
         <input
-          
+          ref={input}
           className={styles[`${data.type}-style`]}
           type="number"
           disabled={!isInput}

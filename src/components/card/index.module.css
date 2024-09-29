@@ -33,6 +33,10 @@
   margin-top: 5px;
 }
 
+.input-style:focus {
+  outline: none; /* Remove the default outline */
+}
+
 .select-style {
   border: 1px solid rgba(211, 211, 211, 1);
   height: 33px;
