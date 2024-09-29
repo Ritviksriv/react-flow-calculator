@@ -199,8 +199,10 @@ const FunctionCardFlow = ({
     <div style={{ width: "100%", height: "100vh" }}>
       <ReactFlow
         nodes={nodes}
-        defaultPosition={[350, -10]}
-        defaultZoom={0.7}
+        fitView
+        fitViewOptions={{
+          maxZoom: 0.7,
+        }}
         defaultEdges={edges}
         panOnDrag={false}
         panOnScroll={false}
