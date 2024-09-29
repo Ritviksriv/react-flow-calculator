@@ -34,10 +34,9 @@ To get started with this project, follow these steps:
    npm install
    ```
 4. Start the development server:
-
-```bash
-  npm start
-```
+   ```bash
+   npm start
+   ```
 
 ## Installation
 
@@ -64,5 +63,3 @@ Each function card includes:
 
 - Users can enter an initial value (x), which connects to function 1.
 - The output (y) is displayed once all functions have been applied, showcasing the final result connected to function 3.
-
-`
